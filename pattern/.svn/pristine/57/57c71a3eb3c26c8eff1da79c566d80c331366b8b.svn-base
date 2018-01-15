@@ -1,1 +1,0 @@
-java -jar "D:\pattern\tools\report.jar" -path "D:/webpage/545657.html" -id 244 -type 2 -code GBK

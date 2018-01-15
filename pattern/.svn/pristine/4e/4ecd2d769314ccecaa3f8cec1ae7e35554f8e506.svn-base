@@ -1,1 +1,0 @@
-java -jar "D:\pattern\tools\report.jar" -path "D:\webpage\www.youde.net\bid\data\15_7.html" -id 244 -type 2 -cut "class:border mt8"
