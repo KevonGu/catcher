@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patterns>
+
+	<!--默认招标-->
+	<pattern id="0" filter="tag-filter,trans-filter,space-filter">
+	
+		<!--代理机构-->
+		<column name="Agency">
+			<matcher regular="代理机构：\s{0,1}.{0,50}?\s" min="3">
+				<replace from="代理机构：\s{0,1}|\s"></replace>
+			</matcher>
+			
+			<matcher regular="([\u4e00-\u9fa5]{2}公共资源交易中心（)|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司\s{0,2}(受|（))|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司(受|（))" min="3">
+				<replace from="\s|受|（"></replace>
+			</matcher>
+		</column>
+		
+		<!--发布公告时间-->
+		<column name="AnnouncementDate">
+			<matcher regular="发布日期：20\d+-\d+-\d+" format="yyyy-MM-dd">
+				<replace from="发布日期："></replace>
+			</matcher>
+		</column>
+		
+		<!--是否是国际标 国际标为1 非国际标为0-->
+		<column name="BiddingPlatform">
+		
+			<matcher regular="USD|\$|美元|国际标">
+				<replace from="^.*$" to="1"></replace>
+			</matcher>
+			
+			<matcher regular=".">
+				<replace from="^.*$" to="0"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人地址-->
+		<column name="BuyerAddress" afterfilter="trim-filter">
+		
+			<matcher regular="(\s| )(采购人地(址|点)|地址)(：|:)\s{0,1}.{0,50}?\s">
+				<replace from="(\s| )(采购人地(址|点)|地址)(：|:)\s{0,1}|\s"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人区域-->
+		<column name="BuyerArea">
+		
+		</column>
+		
+		<!--采购人联系电话-->
+		<column name="BuyerMobile" afterfilter="trim-filter">
+		
+			<matcher regular="(\s| )电话：\s{0,2}.{0,50}?(。| |\s)" min="9" max="30">
+				<replace from="(\s| )电话：\s{0,2}|( |\s|。)"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )联系电话：.{0,50}?\d+( |\s){1,2}\d+" max="30">
+				<replace from="(\s| )联系电话：|( |\s)"></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )(联系电话|电话)：\s{0,2}.{0,50}?(\。|）| |\s)" max="30">
+				<replace from="(\s| )(联系电话|电话)：\s{0,2}|(）| |\s|\。)"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人名称-->
+		<column name="BuyerName" afterfilter="trim-filter">
+		
+			<matcher regular="(采购人名称|采购单位)：\s?.{0,50}?\s">
+				<replace from="(采购人名称|采购单位)："></replace>
+			</matcher>
+			
+			<matcher regular="受\s{0,1}(([\u4e00-\u9fa5]{4,20}、[\u4e00-\u9fa5]{4,20})|[\u4e00-\u9fa5]{4,20})\s{0,1}(\(|（|的|委)">
+				<replace from="\s{0,2}\(|受|的|（|委"></replace>
+			</matcher>
+			
+			<matcher regular="(采购人|采购单位|招标单位|招标人)(名称)?[：: ]\s?.{0,70}?\s">
+				<replace from="(采购人|采购单位|招标单位|招标人)(名称)?[：: ]"></replace>
+			</matcher>
+			
+			<matcher regular="(采购人|采购单位|招标人).{0,30}?(单位名称)[：: ]\s?.{0,70}?\s">
+				<replace from="(采购人|采购单位|招标人).{0,30}?(单位名称)[：: ]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人联系人-->
+		<column name="BuyerPersonName" afterfilter="trim-filter">
+		
+			<matcher regular="采购人联系人：\s{0,2}.{0,50}?( |\s)">
+				<replace from="采购人联系人：\s{0,2}|\\s| "></replace>
+			</matcher>
+			
+			<matcher regular="(联 系 人|联系人|单位联系人|项目联系人|采购单位联系人)：.{0,50}?( |，|\s)">
+				<replace from="(联 系 人|联系人|单位联系人|项目联系人|采购单位联系人)：|(\s|，| )"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--发布机构-->
+		<column name="IssuingAgency">
+		
+			<matcher regular="发布机构：\s{0,1}.{0,50}?\s" min="3">
+				<replace from="发布机构：\s{0,1}|\s"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--是否集中采购 0否 1是-->
+		<column name="NatureOfAgency">
+		
+		</column>
+		
+		<!--开标日期-->
+		<column name="OpenDate" type="date" filter="tag-filter,trans-filter,sp-filter">
+		
+			<matcher regular="(开标评审时间|开标时间|评标时间|谈判(（磋商、询价）{0,1})时间|协商时间|谈判时间|商定时间).{0,30}?20\d\d年\d{1,2}月\d{1,2}日" min="9" max="11" format="yyyy年MM月dd日">
+				<replace from="(开标评审时间|开标时间|评标时间|谈判(（磋商、询价）{0,1})时间|协商时间|谈判时间|商定时间).{0,30}?(?=20\d\d年)"></replace>
+			</matcher>
+			
+			<matcher regular="(开标评审时间|开标时间|评标时间|谈判(（磋商、询价）{0,1})时间|协商时间|谈判时间|商定时间).{0,30}?20\d\d-\d{1,2}-\d{1,2}" min="9" max="11" format="yyyy-MM-dd">
+				<replace from="(开标评审时间|开标时间|评标时间|谈判(（磋商、询价）{0,1})时间|协商时间|谈判时间|商定时间).{0,30}?(?=20\d\d-)"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购预算-->
+		<column name="Price" afterfilter="trim-filter" formatNumber="true">
+		
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,30}?共.{0,4}[\d\.,]{3,15}?元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,30}?共.{0,4}[\d\.,]{1,15}?万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,30}?共.{0,4}[\d\.,]{1,15}?亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,20}?[\d\.,]{3,15}?元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,20}?[\d\.,]{1,15}?万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价)[^\d]{0,20}?[\d\.,]{1,6}?亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}元[^\d]{0,20}?[\d\.,]{3,15}?"  max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}万元[^\d]{0,20}?[\d\.,]{3,15}?"  max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购模式-->
+		<column name="ProcurementMode">
+		
+			<matcher regular="采购方式(：|\s)\s{0,2}[\u4e00-\u9fa5]{2,6}\s{0,2}" min="1" max="2">
+				<replace from="采购方式(：|\s)\s{0,2}|\s{0,2}"></replace>
+				<replace from="公开招标" to="1"></replace>
+				<replace from="邀请招标" to="2"></replace>
+				<replace from="询价采购" to="3"></replace>
+				<replace from="竞争性谈判" to="4"></replace>
+				<replace from="单一来源采购" to="5"></replace>
+				<replace from="其它采购" to="6"></replace>
+				<replace from="竞价" to="7"></replace>
+				<replace from="竞争性磋商" to="8"></replace>
+				<replace from="电子反拍" to="9"></replace>
+				<replace from="协议采购" to="10"></replace>
+				<replace from="电商直购" to="11"></replace>
+				<replace from="[^\d]"></replace>
+			</matcher>
+			
+			<matcher regular="公开招标">
+				<replace from="^.*$" to="1"></replace>
+			</matcher>
+			<matcher regular="邀请招标">
+				<replace from="^.*$" to="2"></replace>
+			</matcher>
+			<matcher regular="询价采购">
+				<replace from="^.*$" to="3"></replace>
+			</matcher>
+			<matcher regular="竞争性谈判">
+				<replace from="^.*$" to="4"></replace>
+			</matcher>
+			<matcher regular="单一来源采购">
+				<replace from="^.*$" to="5"></replace>
+			</matcher>
+			<matcher regular="竞价">
+				<replace from="^.*$" to="7"></replace>
+			</matcher>
+			<matcher regular="竞争性磋商">
+				<replace from="^.*$" to="8"></replace>
+			</matcher>
+			<matcher regular="电子反拍">
+				<replace from="^.*$" to="9"></replace>
+			</matcher>
+			<matcher regular="协议采购">
+				<replace from="^.*$" to="10"></replace>
+			</matcher>
+			<matcher regular="电商直购">
+				<replace from="^.*$" to="11"></replace>
+			</matcher>
+			<matcher regular=".">
+				<replace from="^.*$" to="6"></replace>
+			</matcher>
+		
+		</column>
+		
+		<!--项目编号-->
+		<column name="ProjectCode" afterfilter="prjcode-filter">
+		
+			<matcher regular="项目编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="项目编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="项目编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="项目编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="采购编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="采购编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}采购品目" min="5" max="40">
+				<replace from="采购编号|采购品目|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="(项目编号|采购编号).{5,30}((）\d+)|，|,|。|、|\\s)" min="5" max="40">
+				<replace from="项目编号|采购编号|:|：|，|,|。|、|】|\s|）| "></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName" afterfilter="trim-filter">
+		
+			<matcher regular="项目名称：\s{0,2}.{0,50}?\s" min="5" max="50">
+				<replace from="项目名称：\s{0,2}| "></replace>
+			</matcher>
+			
+			<matcher regular="就|对“.{0,50}?" filter="tag-filter,trans-filter" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+			<matcher regular="(于|对|就)[\u4e00-\u9fa5]{6,25}(重招）|项目)" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--报名开始时间-->
+		<column name="RegistrationDate" type="date" filter="tag-filter,trans-filter,sp-filter">
+		
+			<matcher regular="(报名时间|报名时间为).{0,3}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名时间|报名时间为).{0,3}(?=20\d\d年)"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+			</matcher>
+			
+			<matcher regular="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+			</matcher>
+			
+			<matcher regular="符合资格的(供应商|投标人).{0,5}?\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日" min="9" max="11" check="\d{4}年\d{1,2}月\d{1,2}日">
+				<replace from="符合资格的(供应商|投标人).{0,5}?(?=\d{4}年)"></replace>
+			</matcher>
+			
+			<matcher regular="(文件(.{0,2})时间|文件开始时间|发售时间)(:|：).{0,2}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(文件(.{0,2})时间|文件开始时间|发售时间)(:|：).{0,2}(?=20\d\d年)"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+			</matcher>
+			
+			<matcher regular="应当在(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="应当在(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+			</matcher>
+			
+			<matcher regular="(报名开始|文件开始|文件起始|文件|发售|起止|征集.{0,10})(时间|日期).{0,5}(:|：).{0,3}20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名开始|文件开始|文件起始|文件|发售|起止|征集.{0,10})(时间|日期).{0,5}(:|：).{0,3}(?=20\d\d年)"></replace>
+				<replace from="日期"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--报名结束时间-->
+		<column name="RegistrationEndDate" type="date"  filter="tag-filter,trans-filter,sp-filter">
+		
+			<matcher regular="(报名时间|报名时间为).{0,3}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名时间|报名时间为).{0,3}(?=20\d\d年)"></replace>
+				<replace from="20\d\d年\d{1,2}月\d{1,2}日.{0,50}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="20\d\d年\d{1,2}月\d{1,2}日.{0,50}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(文件(.{0,2})时间|文件开始时间|发售时间|起止时间|征集.{0,10}时间).{0,4}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(文件(.{0,2})时间|文件开始时间|发售时间|起止时间|征集.{0,10}时间).{0,4}(?=20\d\d年)"></replace>
+				<replace from="20\d\d年\d{1,2}月\d{1,2}日.{0,50}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="应当在(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="应当在(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="20\d\d年\d{1,2}月\d{1,2}日.{0,50}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			
+			<matcher regular="(报名时间|报名时间为).{0,3}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名时间|报名时间为).{0,3}(?=20\d\d年)"></replace>
+				<replace from="(?&lt;=年)\d{1,2}月\d{1,2}日.{0,50}?(?=\d{1,2}月)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(投标人应当在|供应商.{0,2}在|请.{0,4}于|可|文件自)(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="(?&lt;=年)\d{1,2}月\d{1,2}日.{0,50}?(?=\d{1,2}月)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(文件(.{0,2})时间|文件开始时间|发售时间|起止时间|征集.{0,10}时间)(:|：).{0,2}20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(文件(.{0,2})时间|文件开始时间|发售时间|起止时间|征集.{0,10}时间)(:|：).{0,2}(?=20\d\d年)"></replace>
+				<replace from="(?&lt;=年)\d{1,2}月\d{1,2}日.{0,50}?(?=\d{1,2}月)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="应当在(.{0,2})20\d\d年\d{1,2}月\d{1,2}日.{0,50}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="应当在(.{0,2})(?=20\d\d年)"></replace>
+				<replace from="(?&lt;=年)\d{1,2}月\d{1,2}日.{0,50}?(?=\d{1,2}月)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(报名|文件)截止.{0,4}(时间|日期).{0,5}(:|：).{0,3}20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名开始|文件开始|文件起始|文件)(时间|日期).{0,5}(:|：).{0,3}(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<!--格式:结束时间:2017年11月9日-->
+			<matcher regular="(结束|截止|截至)(时间|日期).{0,30}?\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日">
+				<replace from="(结束|截止|截至)(时间|日期).{0,30}?(?=\d{4}年)"></replace>
+			</matcher>
+		
+		</column>
+	
+	</pattern>
+
+	<!--默认中标-->
+	<pattern id="-1" filter="tag-filter,trans-filter,space-filter">
+	
+		<!--代理机构-->
+		<column name="Agency">
+			<matcher regular="代理机构：\s{0,1}.{0,50}?\s" min="3">
+				<replace from="代理机构：\s{0,1}|\s"></replace>
+			</matcher>
+			
+			<matcher regular="([\u4e00-\u9fa5]{2}公共资源交易中心（)|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司\s{0,2}(受|（))|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司(受|（))" min="3">
+				<replace from="\s|受|（"></replace>
+			</matcher>
+		</column>
+		
+		<!--发布公告时间-->
+		<column name="AnnouncementDate">
+			<matcher regular="发布日期：20\d+-\d+-\d+" format="yyyy-MM-dd">
+				<replace from="发布日期："></replace>
+			</matcher>
+		</column>
+		
+		<!--是否是国际标 国际标为1 非国际标为0-->
+		<column name="BiddingPlatform">
+		
+			<matcher regular="USD|\$|美元|国际标">
+				<replace from="^.*$" to="1"></replace>
+			</matcher>
+			
+			<matcher regular=".">
+				<replace from="^.*$" to="0"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人地址-->
+		<column name="BuyerAddress" afterfilter="trim-filter">
+		
+			<matcher regular="(\s| )联系地址：\s{0,2}.{0,50}?\s">
+				<replace from="(\s| )联系地址：\s{0,2}|\s"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )(采购人地(址|点)|地址)(：|:)\s{0,1}.{0,50}?\s">
+				<replace from="(\s| )(采购人地(址|点)|地址)(：|:)\s{0,1}|\s"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+			</matcher>
+			
+			<matcher regular="(采购人|采购单位|招标人).{0,100}?(地址)[：: ]\s?.{0,70}?\s" max="30">
+				<replace from="(采购人|采购单位|招标人).{0,100}?(地址)[：: ]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人联系电话-->
+		<column name="BuyerMobile" afterfilter="trim-filter">
+		
+			<matcher regular="(采购人|采购单位|招标人).{0,100}?(电话|联系方式)[：: ]\s?.{0,70}?\s" max="30" min="7">
+				<replace from="(采购人|采购单位|招标人).{0,100}?(电话|联系方式)[：: ]"></replace>
+				<replace from="[^\d-、]"></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )电话：\s{0,2}.{0,50}?(。| |\s)" min="9" max="30">
+				<replace from="(\s| )电话：\s{0,2}|( |\s|。)"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+				<replace from="[^\d-、]"></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )联系电话：.{0,50}?\d+( |\s){1,2}\d+" max="30" min="7">
+				<replace from="(\s| )联系电话：|( |\s)"></replace>
+				<replace from="[^\d-、]"></replace>
+			</matcher>
+			
+			<matcher regular="(\s| )(联系电话|电话)：\s{0,2}.{0,50}?(\。|）| |\s)" max="30" min="7">
+				<replace from="(\s| )(联系电话|电话)：\s{0,2}|(）| |\s|\。)"></replace>
+				<replace from="[\u4e00-\u9fa5]{2}："></replace>
+				<replace from="[^\d-、]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购人名称-->
+		<column name="BuyerName" afterfilter="trim-filter">
+		
+			<matcher regular="受\s{0,1}(([\u4e00-\u9fa5]{4,20}、[\u4e00-\u9fa5]{4,20})|[\u4e00-\u9fa5]{4,20})\s{0,1}(\(|（|的|委)" filter="tag-filter,trans-filter,space-filter,bracket-filter">
+				<replace from="\s{0,2}\(|受|的|（|委"></replace>
+			</matcher>
+			
+			<matcher regular="(有限公司|受).+?的委" filter="tag-filter,trans-filter,sp-filter,bracket-filter">
+				<replace from="\s{0,2}\(|受|的|（|委|有限公司"></replace>
+			</matcher>
+			
+			<matcher regular="(采购人|招标单位|采购单位|招标人)(名称)?[：: ]\s?.{0,70}?\s">
+				<replace from="(采购人|招标单位|采购单位|招标人)(名称)?[：: ]"></replace>
+			</matcher>
+			
+			<matcher regular="(采购人|采购单位|招标人).{0,30}?(单位名称)[：: ]\s?.{0,70}?\s">
+				<replace from="(采购人|采购单位|招标人).{0,30}?(单位名称)[：: ]"></replace>
+			</matcher>
+		
+		</column>
+		
+		<!--采购人联系人-->
+		<column name="BuyerPersonName" afterfilter="trim-filter">
+		
+			<matcher regular="采购人联系人：\s{0,2}.{0,50}?( |\s)">
+				<replace from="采购人联系人：\s{0,2}|\\s| "></replace>
+			</matcher>
+			
+			<matcher regular="(联 系 人|联系人|单位联系人|项目联系人|采购单位联系人)：.{0,50}?( |，|\s)">
+				<replace from="(联 系 人|联系人|单位联系人|项目联系人|采购单位联系人)：|(\s|，| )"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--发布机构-->
+		<column name="IssuingAgency">
+		
+			<matcher regular="发布机构：\s{0,1}.{0,50}?\s" min="3">
+				<replace from="发布机构：\s{0,1}|\s"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购模式-->
+		<column name="ProcurementMode">
+		
+			<matcher regular="采购方式(：|\s)\s{0,2}[\u4e00-\u9fa5]{2,6}\s{0,2}" min="1" max="2">
+				<replace from="采购方式(：|\s)\s{0,2}|\s{0,2}"></replace>
+				<replace from="公开招标" to="1"></replace>
+				<replace from="邀请招标" to="2"></replace>
+				<replace from="询价采购" to="3"></replace>
+				<replace from="竞争性谈判" to="4"></replace>
+				<replace from="单一来源采购" to="5"></replace>
+				<replace from="其它采购" to="6"></replace>
+				<replace from="竞价" to="7"></replace>
+				<replace from="竞争性磋商" to="8"></replace>
+				<replace from="电子反拍" to="9"></replace>
+				<replace from="协议采购" to="10"></replace>
+				<replace from="电商直购" to="11"></replace>
+				<replace from="[^\d]"></replace>
+			</matcher>
+			
+			
+		
+			<matcher regular="公开招标">
+				<replace from="^.*$" to="1"></replace>
+			</matcher>
+			<matcher regular="邀请招标">
+				<replace from="^.*$" to="2"></replace>
+			</matcher>
+			<matcher regular="询价采购">
+				<replace from="^.*$" to="3"></replace>
+			</matcher>
+			<matcher regular="竞争性谈判">
+				<replace from="^.*$" to="4"></replace>
+			</matcher>
+			<matcher regular="单一来源采购">
+				<replace from="^.*$" to="5"></replace>
+			</matcher>
+			<matcher regular="竞价">
+				<replace from="^.*$" to="7"></replace>
+			</matcher>
+			<matcher regular="竞争性磋商">
+				<replace from="^.*$" to="8"></replace>
+			</matcher>
+			<matcher regular="电子反拍">
+				<replace from="^.*$" to="9"></replace>
+			</matcher>
+			<matcher regular="协议采购">
+				<replace from="^.*$" to="10"></replace>
+			</matcher>
+			<matcher regular="电商直购">
+				<replace from="^.*$" to="11"></replace>
+			</matcher>
+			<matcher regular=".">
+				<replace from="^.*$" to="6"></replace>
+			</matcher>
+		
+		</column>
+		
+		<!--项目编号-->
+		<column name="ProjectCode" afterfilter="prjcode-filter">
+		
+			<matcher regular="项目编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="项目编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="项目编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="项目编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="采购编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="采购编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}采购品目" min="5" max="40">
+				<replace from="采购编号|采购品目|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="(项目编号|采购编号).{5,30}((）\d+)|，|,|。|、|\\s)" min="5" max="40">
+				<replace from="项目编号|采购编号|:|：|，|,|。|、|】|\s|）| "></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName" afterfilter="trim-filter">
+		
+			<matcher regular="项目名称：\s{0,2}.{0,50}?\s" min="5" max="50">
+				<replace from="项目名称：\s{0,2}| "></replace>
+			</matcher>
+			
+			<matcher regular="就|对“.{0,50}?" filter="tag-filter,trans-filter" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+			<matcher regular="(于|对|就)[\u4e00-\u9fa5]{6,25}(重招）|项目)" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购预算-->
+		<column name="TenderPrice" formatNumber="true">
+		
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{3,15}元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{1,15}万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{1,15}亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{3,15}元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{1,15}万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{1,6}亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}元.{0,20}[\d\.,]{3,15}?"  max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}万元.{0,20}[\d\.,]{3,15}?"  max="20" min="1" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--中标金额-->
+		<column name="Price" formatNumber="true">
+			<matcher regular="(中标|成交).{0,6}(金额|总价|价格)[^\d]{0,6}?[\d\.,]+万" scale="10000"  filter="tag-filter,trans-filter,sp-filter" min="1" max="20" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交).{0,6}(金额|总价|价格)[^\d]{0,6}?[\d\.,]+元" filter="tag-filter,trans-filter,sp-filter" min="3" max="20" check="\d{4,20}\.?\d{0,3}">
+			
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+		</column>
+		
+		<!--评审专家名单-->
+		<column name="Judger_list" afterfilter="sp-filter"  filter="tag-filter,trans-filter,space-filter,bracket-filter" mutiple="true">
+			<matcher regular="委员会负责人[:：].{2,10}\s">
+				<replace from="委员会负责人[:：]"></replace>
+			</matcher>
+			<matcher regular="(成员|成员名单)[:：]\s?.{0,80}?\s">
+				<replace from="(成员|成员名单)[:：]"></replace>
+			</matcher>
+		</column>
+	
+	</pattern>
+
+	<!--默认更正-->
+	<pattern id="-2" filter="tag-filter,trans-filter,space-filter">
+	
+		<!--代理机构-->
+		<column name="Agency">
+			<matcher regular="代理机构：\s{0,1}.{0,50}?\s" min="3">
+				<replace from="代理机构：\s{0,1}|\s"></replace>
+			</matcher>
+			
+			<matcher regular="([\u4e00-\u9fa5]{2}公共资源交易中心（)|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司\s{0,2}(受|（))|(\s{0,2}[\u4e00-\u9fa5]{5,20}公司(受|（))" min="3">
+				<replace from="\s|受|（"></replace>
+			</matcher>
+		</column>
+		
+		<!--发布公告时间-->
+		<column name="AnnouncementDate">
+			<matcher regular="发布日期：20\d+-\d+-\d+" format="yyyy-MM-dd">
+				<replace from="发布日期："></replace>
+			</matcher>
+		</column>
+		
+		<!--项目编号-->
+		<column name="ProjectCode" afterfilter="prjcode-filter">
+		
+			<matcher regular="项目编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="项目编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="项目编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="项目编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{0,2}[a-zA-Z\d-/\s（）]+" min="5" max="40">
+				<replace from="采购编号|:|：|\s"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}\d号" min="5" max="40">
+				<replace from="采购编号|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="采购编号.{0,1}(:|：).{5,30}采购品目" min="5" max="40">
+				<replace from="采购编号|采购品目|:|：|\s|。"></replace>
+			</matcher>
+			
+			<matcher regular="(项目编号|采购编号).{5,30}((）\d+)|，|,|。|、|\\s)" min="5" max="40">
+				<replace from="项目编号|采购编号|:|：|，|,|。|、|】|\s|）| "></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName" afterfilter="trim-filter">
+		
+			<matcher regular="项目名称：\s{0,2}.{0,50}?\s" min="5" max="50">
+				<replace from="项目名称：\s{0,2}| "></replace>
+			</matcher>
+			
+			<matcher regular="就|对“.{0,50}?" filter="tag-filter,trans-filter" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+			<matcher regular="(于|对|就)[\u4e00-\u9fa5]{6,25}(重招）|项目)" min="5" max="50">
+				<replace from="于|对|就| "></replace>
+			</matcher>
+			
+		</column>
+		
+	</pattern>
+	
+</patterns>

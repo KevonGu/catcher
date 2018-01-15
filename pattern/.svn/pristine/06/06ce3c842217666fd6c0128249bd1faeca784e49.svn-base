@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patterns>
+	
+	<!--广州有德招标-->
+	<pattern id="26"  filter="tag-filter,trans-filter,space-filter">
+		
+		<!--索引列-->
+		<column name="Index" filter="atag-filter,tag-filter,trans-filter,space-filter" afterfilter="symbol-filter,expan-filter">
+		
+			
+			<matcher regular="包组\d+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包\d+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="子项目\d+">
+				<replace from="子项目"></replace>
+			</matcher>
+			<matcher regular="标包\d+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包\d+">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[A-Z]+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包[A-Z]+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="标包[A-Z]+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包[A-Z]+">
+				<replace from="包"></replace>
+			</matcher>
+			<matcher regular="[A-Z]+包">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[a-z]+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包[a-z]+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="标包[a-z]+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包[a-z]+">
+				<replace from="包"></replace>
+			</matcher>
+			<matcher regular="[a-z]+包">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="包组"></replace>
+			</matcher>
+			
+			<matcher regular="子包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="子包"></replace>
+			</matcher>
+			
+			<matcher regular="标包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="标包"></replace>
+			</matcher>
+			
+			<matcher regular="包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="包"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--完成时间-->
+		<column name="CompletionDate" afterfilter="symbol-remove-filter,trim-filter">
+			
+			<matcher regular="(交货期|完工期|完成时间)：\s?\S+">
+				<replace from="(交货期|完工期|完成时间)："></replace>
+			</matcher>
+		</column>
+		
+		<!--包组金额-->
+		<column name="ProcurementMoney" formatNumber="true"  afterfilter="trim-filter">
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{3,15}?元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,2}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{1,15}?万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,30}?共.{0,4}[\d\.,]{1,15}?亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="^.*共"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{3,15}?元" filter="tag-filter,trans-filter,sp-filter" max="20" min="4" check="\d{4,20}\.?\d{0,2}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{1,15}?万元?" filter="tag-filter,trans-filter,sp-filter" max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,20}?[\d\.,]{1,6}?亿元?" filter="tag-filter,trans-filter,sp-filter" max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}元.{0,20}?[\d\.,]{3,15}?"  max="20" min="4" check="\d{4,20}\.?\d{0,2}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(估价|预算金额|最高限价|采购预算|采购金额|项目预算|项目金额|预算|招标控制价).{0,4}万元.{0,20}?[\d\.,]{3,15}?"  max="20" min="1" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<!--采购预算XXX元-->
+			<matcher regular="采购预算[\s\S]{0,20}?[0-9,\.]+元"  max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+			
+			<matcher regular="预算.{0,20}?[0-9,\.]+" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+			
+			<matcher regular="财政资金.{0,20}?[0-9,\.]+元" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--采购内容-->
+		<column name="ProjectContent" afterfilter="symbol-remove-filter,trim-filter">
+			
+			
+			<matcher regular="(采购项目内容|服务内容|采购内容|招标内容)：\s?\S+">
+				<replace from="(采购项目内容|服务内容|采购内容|招标内容)："></replace>
+			</matcher>
+			
+		</column>
+		
+		<column name="ServerLife" afterfilter="symbol-remove-filter,trim-filter">
+			<matcher regular="(服务周期|服务期限|服务期)：\s?\S+">
+				<replace from="(服务周期|服务期限|服务期)："></replace>
+			</matcher>
+		</column>
+		
+		<!--采购数量-->
+		<column name="ProjectCount">
+			<matcher regular="采购数量：[\s]{0,4}.+?[\s&lt;。]">
+				<replace from="采购数量："></replace>
+				<replace from="&lt;.+?&gt;"></replace>
+				<replace from="[\s&lt;。]"></replace>
+			</matcher>
+		</column>
+		
+	</pattern>
+	
+	<!--广州有德中标-->
+	<pattern id="244" filter="tag-filter,trans-filter,space-filter">
+	
+		<!--索引列-->
+		<column name="Index" filter="atag-filter,tag-filter,trans-filter,space-filter" afterfilter="symbol-filter,expan-filter">
+		
+			<matcher regular="包组\d+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包\d+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="子项目\d+">
+				<replace from="子项目"></replace>
+			</matcher>
+			<matcher regular="标包\d+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包\d+">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[A-Z]+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包[A-Z]+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="标包[A-Z]+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包[A-Z]+">
+				<replace from="包"></replace>
+			</matcher>
+			<matcher regular="[A-Z]+包">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[a-z]+">
+				<replace from="包组"></replace>
+			</matcher>
+			<matcher regular="子包[a-z]+">
+				<replace from="子包"></replace>
+			</matcher>
+			<matcher regular="标包[a-z]+">
+				<replace from="标包"></replace>
+			</matcher>
+			<matcher regular="包[a-z]+">
+				<replace from="包"></replace>
+			</matcher>
+			<matcher regular="[a-z]+包">
+				<replace from="包"></replace>
+			</matcher>
+			
+			<matcher regular="包组[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="包组"></replace>
+			</matcher>
+			
+			<matcher regular="子包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="子包"></replace>
+			</matcher>
+			
+			<matcher regular="标包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="标包"></replace>
+			</matcher>
+			
+			<matcher regular="包[一二三四五六七八九十]+">
+				<replace from="一" to="1"></replace>
+				<replace from="二" to="2"></replace>
+				<replace from="三" to="3"></replace>
+				<replace from="四" to="4"></replace>
+				<replace from="五" to="5"></replace>
+				<replace from="六" to="6"></replace>
+				<replace from="七" to="7"></replace>
+				<replace from="八" to="8"></replace>
+				<replace from="九" to="9"></replace>
+				<replace from="(?&lt;=[^\d])十$" to="10"></replace>
+				<replace from="(?&lt;=[^\d])十(?=\d)" to="1"></replace>
+				<replace from="(?&lt;=\d)十$" to="0"></replace>
+				<replace from="(?&lt;=\d)十(?=\d)" to=""></replace>
+				<replace from="包"></replace>
+			</matcher>
+			
+		</column>
+	
+		<!--中标公司名称-->
+		<column name="BidCompany" filter="tag-filter,trans-filter,space-filter,expan-filter" afterfilter="symbol-remove-filter,trim-filter">
+		
+			<!--中标人名称：广州市第三建筑装修有限公司<br />-->
+			<matcher regular="(中标|成交)(供应商|服务商|人|单位)(名称)\s?[：：]\s?\S+?[\s]" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="(中标|成交)(供应商|服务商|人|单位)(名称)\s?[： ：]"></replace>
+			</matcher>	
+			
+			<matcher regular="(中标|成交)(供应商|服务商|人|单位)\s?[： ：]\s?\S+?[\s]" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="(中标|成交)(供应商|服务商|人|单位)\s?[： ：]"></replace>
+			</matcher>	
+			
+			<matcher regular="(中标|成交)信息[\s\S]{0,200}?名称\s?[： ：]\s?\S+" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="^.*名称\s?[： ：]"></replace>
+			</matcher>
+			
+			<matcher regular="中标候选(供应商|人)名称\s?[： ：]\s?\S+?[\s]" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="中标候选(供应商|人)名称\s?[： ：]?"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(供应商|服务商|人|单位)(名称)\s?\S+?[\s]" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="(中标|成交)(供应商|服务商|人|单位)(名称)"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(供应商|服务商|人|单位)\s?\S+?[\s]" check=".*(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="(中标|成交)(供应商|服务商|人|单位)"></replace>
+			</matcher>	
+			
+			<matcher regular="(中标|成交)(供应商|服务商|人|单位)(名称)\s?\S+?(公司|中心|出版社|协会|[队院）\)厂所部队店场站台会行社]|宾馆|公司|联合体|学校|大学|设计室)">
+				<replace from="(中标|成交)(供应商|服务商|人|单位)(名称)"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--中标人联系人-->
+		<column name="BidCompanyName">
+		
+		</column>
+		
+		<!--中标人联系电话-->
+		<column name="BidCompanyMobile">
+		
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName">
+			
+			<matcher regular="&lt;h1&gt;.*?&lt;/h1&gt;" filter="none">
+				<replace from="&lt;.*?&gt;"></replace>
+				<replace from="(?&lt;=(工程)|(项目)|(服务)|(采购)).{0,10}$"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--中标公司地址-->
+		<column name="BidCompanyAddress" afterfilter="symbol-remove-filter,trim-filter">
+			
+			
+			<matcher regular="((中标)|(成交))((供应商)|(人)|(单位))地址：\s{0,4}\S{2,30}?\s">
+				<replace from="((中标)|(成交))((供应商)|(人)|(单位))地址："></replace>
+				<replace from="[&lt;\s。]"></replace>
+			</matcher>
+			
+			<matcher regular="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}.*?\s" filter="tag-filter,trans-filter">
+				<replace from="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}"></replace>
+				<replace from="[\s。]"></replace>
+			</matcher>
+			
+			<matcher regular="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}：.*?\s">
+				<replace from="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}："></replace>
+				<replace from="\s"></replace>
+			</matcher>
+			
+			<matcher regular="中标人[\s\S]{0,120}联系地址\s{0,4}：.*?\s">
+				<replace from="中标人[\s\S]{0,120}联系地址\s{0,4}："></replace>
+				<replace from="\s"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--中标金额-->
+		<column name="BidMoney"  formatNumber="true">
+		
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)[：:].{0,10}?[\d\.,]+元" filter="tag-filter,trans-filter,sp-filter" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)[：:].{0,10}?[\d\.,]+万" filter="tag-filter,trans-filter,sp-filter" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)（万元）[：:].{0,10}?[\d\.,]+" filter="tag-filter,trans-filter,sp-filter" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)[：:].{0,10}?[\d\.,]+亿" filter="tag-filter,trans-filter,sp-filter" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)[：:].{0,10}?[\d\.,]{3,20}" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			
+			
+			<matcher regular="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)[：:]?.{0,50}?[\d\.,]+元" filter="tag-filter,trans-filter,sp-filter" check="\d{4,20}\.?\d{0,3}">
+				<replace from="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)[：:]?.{0,50}?[\d\.,]+万" filter="tag-filter,trans-filter,sp-filter" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)[：:]?.{0,50}?[\d\.,]+亿" filter="tag-filter,trans-filter,sp-filter" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)[：:]?.{0,50}?[\d\.,]{3,20}" filter="tag-filter,trans-filter,sp-filter" check="\d{4,20}\.?\d{0,3}">
+				<replace from="中标(（成交）)?信息.{0,150}?(金额人民币|中标(（成交）)?金额|单价汇总)"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			
+			<matcher regular="不含税总价：[\d\.,]{3,20}" filter="tag-filter,trans-filter,sp-filter" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			
+		
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价).{0,10}?[\d\.,]+元" filter="tag-filter,trans-filter,sp-filter" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价).{0,10}?[\d\.,]+万" filter="tag-filter,trans-filter,sp-filter" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价)（万元）.{0,10}?[\d\.,]+" filter="tag-filter,trans-filter,sp-filter" scale="10000" check="\d{1,4}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价).{0,10}?[\d\.,]+亿" filter="tag-filter,trans-filter,sp-filter" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标|成交)(金额|总价|价格|总金额|总报价金额|总报价).{0,10}?[\d\.,]{3,20}" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			
+		</column>
+		
+		<column name="ServerLife">
+		
+		</column>
+		
+		<!--结果标记 0失败 1成功-->
+		<column name="Success" filter="atag-filter,tag-filter">
+			<matcher regular="流标|废标|失败|取消采购|暂停采购|重新组织采购">
+				<replace from="^.*$" to="0"></replace>
+			</matcher>
+			<matcher regular=".">
+				<replace from="^.*$" to="1"></replace>
+			</matcher>
+		</column>
+	
+	</pattern>
+	
+</patterns>

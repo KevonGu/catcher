@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<columns dir="D:\webpage\www.youde.net\tender\data\" code="GBK" patternId="0,26" kv="class:border mt8" sort="0" entity="1">
+Agency,AnnouncementDate,Price,BiddingPlatform,BuyerAddress,BuyerMobile,BuyerName,BuyerPersonName,IssuingAgency,OpenDate,ProcurementMode,ProjectCode,ProjectName,RegistrationDate,RegistrationEndDate
+</columns>

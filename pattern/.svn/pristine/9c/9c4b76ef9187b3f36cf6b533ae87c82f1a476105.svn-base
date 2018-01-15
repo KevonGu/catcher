@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<task 
+	timeout="5000" 
+	retry="30" 
+	sleep="500" 
+	retrytime="10000" 
+	contentdir="D:\webpage\www.youde.net\tender\data\"
+	namespace="[page]_[item].html"
+	failoutput="D:\webpage\www.youde.net\tender\failedlist.txt" 
+	logoutput="D:\webpage\www.youde.net\tender\log.txt" 
+>
+<!--
+timeout-请求超时等待时间
+retry-出错重试次数
+sleep-网页下载休眠时间
+retrytime-出错重试间隔时间
+contentdir-网页存放目录
+namespace-文件命名格式[page]页码 [item]列表序号 [index]成功序号 [timestamp]当前时间戳
+failoutput-失败任务输出
+logoutput-日志输出
+-->
+
+<!--
+type-下载类型，page 通过列表下载
+min-最短长度，当文档小于这个长度 下载失败
+encode-网页地编码格式
+pagesize-列表大小
+pagestart-开始下载地页面
+pageend-结束下载的页面
+pattern-列表页的url格式[page]为序号
+num-需要下载的网页的数量
+-->
+<download type="page" min="2000" encode="GBK" pagesize="20" pagestart="1" pageend="204" pattern="http://www.youde.net/list.asp?id=2&amp;page=[page]" num="4070">
+	<!--
+	listKV- 有德 ul标签 class="list_list"
+	listSort-第几个标签
+	itemTag- 列表项目标签
+	regular- 匹配url正则
+	prefix-url前缀
+	-->
+	<pattern listKV="class:list_list" listSort="0"  itemTag="li" regular="(?&lt;=href=&quot;).+?(?=&quot;)" prefix="http://www.youde.net/"></pattern>
+</download>
+
+</task>

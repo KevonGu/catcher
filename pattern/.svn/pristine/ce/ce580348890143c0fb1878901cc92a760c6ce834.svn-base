@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tablepatterns>
+
+	<!--有德招标-->
+	<tablepattern id="26">
+		
+		<!--包组表格匹配条件-->
+		<tablematchers>
+			<matcher regular="包组"></matcher>
+			<matcher regular="子包"></matcher>
+			<matcher regular="包号"></matcher>
+			<matcher regular="标包"></matcher>
+			<matcher regular="序号"></matcher>
+		</tablematchers>
+		
+		<!--排除条件-->
+		<tableexpect>
+			<matcher regular="项目名称："></matcher>
+		</tableexpect>
+		
+		<!--采购项目表格匹配条件-->
+		<singlematchers>
+			<matcher regular="内容"></matcher>
+			<!--<matcher regular="采购内容"></matcher>
+			<matcher regular="招标内容"></matcher>
+			<matcher regular="项目内容"></matcher>
+			<matcher regular="服务内容"></matcher>
+			<matcher regular="分项内容"></matcher>-->
+			<!--<matcher regular="产品名称"></matcher>
+			<matcher regular="项目名称"></matcher>
+			<matcher regular="设备名称"></matcher>-->
+			<matcher regular="货物"></matcher>
+			<matcher regular="产品"></matcher>
+			<matcher regular="名称"></matcher>
+			<matcher regular="项目"></matcher>
+			<matcher regular="内容明细"></matcher>
+			<matcher regular="采购预算"></matcher>
+			<matcher regular="完工期"></matcher>
+			<matcher regular="交货期"></matcher>
+			<matcher regular="总价"></matcher>
+		</singlematchers>
+		
+		<!--排除条件-->
+		<singleexpect>
+			<matcher regular="项目名称："></matcher>
+		</singleexpect>
+		
+		<!--索引列-->
+		<tablecolumn name="Index" type="string">
+			<headermatchers>
+				<matcher regular="包组"></matcher>
+				<matcher regular="子包"></matcher>
+				<matcher regular="包号"></matcher>
+				<matcher regular="标包"></matcher>
+				<matcher regular="序号" limit="6"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+				
+				<matcher regular="包组.{0,4}[\dA-Za-z]{1,2}">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>	
+				
+				<matcher regular="包.{0,4}[\dA-Za-z]{1,2}">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>
+				
+				<matcher regular="[\dA-Za-z]{1,2}包">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>
+				
+				<matcher regular="序号.{0,4}\d{1,2}">
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="包组[一二三四五六七八九十]+">
+					<replace from="包组"></replace>
+					<replace ref="index-translator"></replace>
+				</matcher>
+				
+				<matcher regular="包[一二三四五六七八九十]+">
+					<replace from="包"></replace>
+					<replace ref="index-translator"></replace>
+				</matcher>
+			
+				<matcher regular="^\s*?\d{1,2}">
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[一二三四五六七八九十]+">
+					<replace from="\s"></replace>
+					<replace ref="index-translator"></replace>
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[A-Z]+">
+					<replace from="[^A-Z]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[a-z]+">
+					<replace from="[^a-z]"></replace>
+				</matcher>
+				
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--子包内容-->
+		<tablecolumn name="ProjectContent" type="string">
+			<headermatchers>
+				<matcher regular="(内容)|(名称)" max="10" min="0" formatNumber="false"  scale=""></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--数量-->
+		<tablecolumn name="ProjectCount" type="string">
+			<headermatchers>
+				<matcher regular="数量"></matcher>
+				<matcher regular="数"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--金额-->
+		<tablecolumn name="ProcurementMoney" type="string"  formatNumber="true" minNum="1000" maxNum="9999999999">
+		
+			<headermatchers>
+				<matcher regular="预算[\s|\S]{0,8}万" scale="10000"></matcher>
+				<matcher regular="最高限价[\s|\S]{0,8}万" scale="10000"></matcher>
+				<matcher regular="最高限价"></matcher>
+				<matcher regular="预算"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+				<matcher regular="\d+\.?\d*.{0,3}万" scale="10000"  min="1">
+					<replace from="万"></replace>
+				</matcher>
+				<matcher regular="[\d\.,]+"  min="1">
+					<replace from=","></replace>
+				</matcher>
+				
+			</valuematchers>
+			
+		</tablecolumn>
+		
+		<!--完成日期-->
+		<tablecolumn name="CompletionDate" type="string">
+		
+			<headermatchers>
+				<matcher regular="(完成)|(交货)|(完工)"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--服务年限-->
+		<tablecolumn name="ServerLife" type="string">
+			<headermatchers>
+				<matcher regular="(年限)|(服务年限)|(服务期限)|期限|服务期|服务周期"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			</valuematchers>
+		</tablecolumn>
+		
+	</tablepattern>
+	
+	<!--有德中标-->
+	<tablepattern id="244">
+		
+		<!--包组表格匹配条件-->
+		<tablematchers>
+			<matcher regular="包组"></matcher>
+			<matcher regular="报价"></matcher>
+			<matcher regular="标包"></matcher>
+			<matcher regular="中标"></matcher>
+			<matcher regular="主要成交标的名称"></matcher>
+		</tablematchers>
+		
+		<!--排除条件-->
+		<tableexpect>
+			<matcher regular="得分"></matcher>
+			<matcher regular="排名"></matcher>
+			<matcher regular="名次"></matcher>
+		</tableexpect>
+		
+		<!--采购内容表格匹配条件-->
+		<singlematchers>
+			<matcher regular="中标"></matcher>
+			<matcher regular="成交"></matcher>
+			<matcher regular="项目内容"></matcher>
+		</singlematchers>
+		
+		<!--排除条件-->
+		<singleexpect>
+			<matcher regular="得分"></matcher>
+			<matcher regular="排名"></matcher>
+			<matcher regular="排序"></matcher>
+		</singleexpect>
+		
+		<!--索引列-->
+		<tablecolumn name="Index" type="string">
+		
+			<headermatchers>
+			
+				<matcher regular="包组"></matcher>
+				<matcher regular="包号"></matcher>
+				<matcher regular="主要成交标的名称" limit="10"></matcher>
+				<matcher regular="中标.{0,10}?名称" limit="10"></matcher>
+				<matcher regular="序号" limit="6"></matcher>
+				
+			</headermatchers>
+			
+			<valuematchers>	
+				
+				<matcher regular="包组.{0,4}[\dA-Za-z]{1,2}">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>	
+				
+				<matcher regular="包.{0,4}[\dA-Za-z]{1,2}">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>
+				
+				<matcher regular="[\dA-Za-z]{1,2}包">
+					<replace from="[^\dA-Za-z]"></replace>
+				</matcher>
+				
+				<matcher regular="序号.{0,4}\d{1,2}">
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="包组[一二三四五六七八九十]+">
+					<replace from="包组"></replace>
+					<replace ref="index-translator"></replace>
+				</matcher>
+				
+				<matcher regular="包[一二三四五六七八九十]+">
+					<replace from="包"></replace>
+					<replace ref="index-translator"></replace>
+				</matcher>
+			
+				
+				<matcher regular="[\(（][一二三四五六七八九十]+[\)）]">
+					<replace from="[\(\)（）]"></replace>
+					<replace ref="index-translator"></replace>
+					<replace from="[^\d]"></replace>
+				</matcher>
+			
+				<matcher regular="^\s*?\d{1,2}(?=、)">
+					<replace from="[^\d]"></replace>
+				</matcher>
+			
+				<matcher regular="^\s*?[a-zA-Z]+(?=、)">
+					<replace from="[^a-zA-Z]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[一二三四五六七八九十]+(?=、)">
+					<replace from="\s*"></replace>
+					<replace ref="index-translator"></replace>
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				
+				<matcher regular="^\s*?\d{1,2}">
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[a-z]+">
+					<replace from="[^a-z]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[A-Z]+">
+					<replace from="[^A-Z]"></replace>
+				</matcher>
+				
+				<matcher regular="^\s*?[一二三四五六七八九十]+">
+					<replace from="\s"></replace>
+					<replace ref="index-translator"></replace>
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+			</valuematchers>
+			
+		</tablecolumn>
+		
+		<!--包名称-->
+		<tablecolumn name="ProjectName" type="string">
+		
+			<headermatchers>
+				<matcher regular="成交标的名称"></matcher>
+				<matcher regular="标的名称"></matcher>
+				<matcher regular="产品名称"></matcher>
+				<matcher regular="包组名称"></matcher>
+				<matcher regular="设备名称"></matcher>
+				<matcher regular="分包名称"></matcher>
+				<matcher regular="货物名称"></matcher>
+				<matcher regular="项目名称"></matcher>
+				<matcher regular="仪器名称"></matcher>
+				<matcher regular="项目内容"></matcher>
+				<matcher regular="内容"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+				<matcher regular=".+">
+					<replace from="包组\d"></replace>
+					<replace from="[：:]"></replace>
+				</matcher>
+			</valuematchers>
+			
+		</tablecolumn>
+		
+		<!--中标公司名称-->
+		<tablecolumn name="BidCompany" type="string">
+			<headermatchers>
+				<matcher regular="(成交|中标)(服务商|供应商|人|单位)名称$"></matcher>
+				<matcher regular="(成交|中标)(服务商|供应商|人|单位)$"></matcher>
+				<matcher regular="中标候选人名称$" max="10" min="0"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--中标公司地址-->
+		<tablecolumn name="BidCompanyAddress" type="string">
+		
+			<headermatchers>
+				<matcher regular="地址" max="10" min="0"></matcher>
+			</headermatchers>
+			
+			<valuematchers>	
+			
+			</valuematchers>
+			
+		</tablecolumn>
+		
+		<!--包金额-->
+		<tablecolumn name="BidMoney" type="string" formatNumber="true" minNum="1000" maxNum="9999999999">
+		
+			<headermatchers>
+			
+				<matcher regular="投标总价.{0,4}万" scale="10000"></matcher>
+				<matcher regular="中标总价.{0,4}万" scale="10000"></matcher>
+				<matcher regular="成交总报价.{0,4}万" scale="10000"></matcher>
+				<matcher regular="成交金额.{0,4}万" scale="10000"></matcher>
+				<matcher regular="成交价格.{0,4}万" scale="10000"></matcher>
+				<matcher regular="中标金额.{0,4}万" scale="10000"></matcher>
+				<matcher regular="报价金额.{0,4}万" scale="10000"></matcher>
+				<matcher regular="中标价.{0,4}万" scale="10000"></matcher>
+				
+				<matcher regular="投标总价"></matcher>
+				<matcher regular="中标总价"></matcher>
+				<matcher regular="成交总报价"></matcher>
+				<matcher regular="成交金额"></matcher>
+				<matcher regular="成交价格"></matcher>
+				<matcher regular="中标金额"></matcher>
+				<matcher regular="报价金额"></matcher>
+				<matcher regular="中标价"></matcher>
+				
+			</headermatchers>
+			
+			<valuematchers>	
+			
+				<matcher regular="\d+\.?\d*.{0,3}万" scale="10000" min="1">
+					<replace from="万"></replace>
+					<replace from="[^\d]"></replace>
+				</matcher>
+				
+				<matcher regular="[\d\.,]+" min="1">
+					<replace from=","></replace>
+				</matcher>
+				
+			</valuematchers>
+			
+		</tablecolumn>
+		
+		<!--服务年限-->
+		<tablecolumn name="ServerLife">
+			<headermatchers>
+				<matcher regular="服务年限"></matcher>
+				<matcher regular="期限"></matcher>
+				<matcher regular="服务时间"></matcher>
+				<matcher regular="服务期"></matcher>
+				<matcher regular="供应期"></matcher>
+			</headermatchers>
+			<valuematchers>
+			
+			</valuematchers>
+		</tablecolumn>
+		
+		<!--成功标记-->
+		<tablecolumn name="Success" target="row">
+			<headermatchers>
+			</headermatchers>
+			<valuematchers>
+				<matcher regular="流标|失败|废标|重新组织采购">
+					<replace from="^.*$" to="0"></replace>
+				</matcher>
+				
+				<matcher regular=".">
+					<replace from="^.*$" to="1"></replace>
+				</matcher>
+				
+			</valuematchers>
+		</tablecolumn>
+	
+	</tablepattern>
+	
+</tablepatterns>

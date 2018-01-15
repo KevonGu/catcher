@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patterns>
+	
+	<pattern id="0">
+	
+		<column name="CompletionDate">
+			
+		</column>
+		
+		<column name="ProcurementMoney">
+		
+		</column>
+		
+		<column name="ProjectContent">
+		
+		</column>
+		
+	</pattern>
+	
+	
+</patterns>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patterns>
+
+	<!--广州有德招标-->
+	<pattern id="26" filter="tag-filter,trans-filter,space-filter">
+		
+		<column name="ProjectName">
+			<!--
+			<h1>佛山太平洋保险大厦外墙改造工程中标公告</h1>
+			-->
+			<matcher regular="&lt;h1&gt;.*?&lt;/h1&gt;" filter="none">
+				<replace from="&lt;.*?&gt;"></replace>
+				<replace from="(?&lt;=(工程)|(项目)|(服务)|(采购)).{0,10}$"></replace>
+			</matcher>
+		</column>
+		
+		<column name="Agency">
+			<matcher regular=".">
+				<replace from="^.*$" to="广州有德招标代理有限公司"></replace>
+			</matcher>
+		</column>
+		
+		<column name="IssuingAgency">
+			<matcher regular=".">
+				<replace from="^.*$" to="广州有德招标代理有限公司"></replace>
+			</matcher>
+		</column>
+		
+		<!--发布时间-->
+		<column name="AnnouncementDate" type="date">
+			<matcher regular="发布时间：\d{4}-\d{2}-\d{2}" format="yyyy-MM-dd">
+				<replace from="发布时间："></replace>
+			</matcher>
+		</column>
+		
+		<!--开标时间-->
+		<column name="OpenDate" type="date" filter="tag-filter,trans-filter,sp-filter">
+			<matcher regular="(开标时间|磋商时间|唱价时间|询价时间|预审时间|审查日期|谈判.{0,10}?时间|会议.{0,10}?时间|竞拍时间).{0,20}?\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日">
+				<replace from="^.*?(?=\d{4}年)"></replace>
+			</matcher>
+			
+			<matcher regular="(开标时间|磋商时间|唱价时间|询价时间|预审时间|审查日期|谈判.{0,10}?时间|会议.{0,10}?时间|竞拍时间).{0,40}时间.{0,6}?\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日">
+				<replace from="^.*?(?=\d{4}年)"></replace>
+			</matcher>
+			
+			<matcher regular="(开标时间|磋商时间|唱价时间|询价时间|预审时间|审查日期|谈判.{0,10}?时间|会议.{0,10}?时间|竞拍时间).{0,20}?\d{4}年\d{1,2}月\d{1,2}" format="yyyy年MM月dd">
+				<replace from="^.*?(?=\d{4}年)"></replace>
+			</matcher>
+			
+			<matcher regular="(开标时间|磋商时间|唱价时间|询价时间|预审时间|审查日期|谈判.{0,10}?时间|会议.{0,10}?时间|竞拍时间).{0,40}时间.{0,6}?\d{4}年\d{1,2}月\d{1,2}" format="yyyy年MM月dd">
+				<replace from="^.*?(?=\d{4}年)"></replace>
+			</matcher>
+		</column>
+		
+		<!--报名时间-->
+		<column name="RegistrationDate" type="date" filter="tag-filter,trans-filter,sp-filter">
+			<matcher regular="发售时间[\s\S]{0,120}\d{4}年\d{1,2}月\d{1,2}日起?至\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日" min="9" max="11">
+				<replace from="发售时间[\s\S]{0,120}?(?=\d{4}年)"></replace>
+				<replace from="起?至\d{4}年\d{1,2}月\d{1,2}日"></replace>
+			</matcher>
+			
+			<!--格式:开始时间:2017年11月2日-->
+			<matcher regular="开始时间.{0,4}\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日" min="9" max="11">
+				<replace from="[\d年月日]"></replace>
+			</matcher>
+			
+			<matcher regular="(报名开始|文件开始|文件起始|文件|发售|公示)(时间|日期|期限).{0,30}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy年MM月dd">
+				<replace from="(报名开始|文件开始|文件起始|文件|发售|公示)(时间|日期|期限).{0,30}?(?=20\d\d年)"></replace>
+				<replace from="日期"></replace>
+				<replace from="日.{0,50}?月.{1,3}日"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			<matcher regular="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?20\d\d年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy-MM-dd">
+				<replace from="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+				<replace from="[年月]" to="-"></replace>
+			</matcher>
+			
+			<matcher regular="符合资格的供应商应当[自在]?\d{4}年\d{1,2}月\d{1,2}日" format="yyyy年MM月dd日">
+				<replace from="符合资格的供应商应当[自在]?"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--报名截至时间-->
+		<column name="RegistrationEndDate" type="date" filter="tag-filter,trans-filter,sp-filter">
+		
+			<matcher regular="招标.{0,4}发售时间{10,20}[起|至]{1,2}\s{0,2}\d{4}年\d{2}月\d{2}日" format="yyyy年MM月dd日">
+				<replace from="招标.{0,4}发售时间{10,20}[起|至]{1,2}\s{0,2}" to=""></replace>
+			</matcher>
+			
+			<!--公示期限xxx XXXX年XX月XX日起至XXXX年XX月XX日-->
+			<matcher regular="公示期限[\s\S]{10,30}?[起|至]{1,2}\s{0,2}\d{4}年\d{2}月\d{2}日" format="yyyy年MM月dd日">
+				<replace from="公示期限[\s\S]{10,30}?[起|至]{1,2}\s{0,2}" to=""></replace>
+			</matcher>
+			
+			<!--发售时间xxx XXXX年XX月XX日起至XXXX年XX月XX日-->
+			<matcher regular="发售时间[\s\S]{0,120}\d{4}\s{0,4}年\s{0,4}\d{1,2}\s{0,4}月\s{0,4}\d{1,2}\s{0,4}日\s{0,4}起?至\s{0,4}\d{4}\s{0,4}年\s{0,4}\d{1,2}\s{0,4}月\s{0,4}\d{1,2}\s{0,4}日" format="yyyy年MM月dd日">
+				<replace from="发售时间[\s\S]{0,120}\d{4}\s{0,4}年\s{0,4}\d{1,2}\s{0,4}月\s{0,4}\d{1,2}\s{0,4}日\s{0,4}起?至\s{0,4}"></replace>
+				<replace from="\s"></replace>
+			</matcher>
+			
+			<matcher regular="符合资格的供应商应当[自在]?\d{4}年\d{1,2}月\d{1,2}日?起至\d{4}年\d{1,2}月\d{1,2}日?" format="yyyy年MM月dd">
+				<replace from="符合资格的供应商应当[自在]?\d{4}年\d{1,2}月\d{1,2}日?起至"></replace>
+				<replace from="日"></replace>
+			</matcher>
+			
+			
+			<matcher regular="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?20\d\d年\d{1,2}月\d{1,2}日.{0,4}?\d{4}年\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy-MM-dd">
+				<replace from="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?20\d\d年\d{1,2}月\d{1,2}日.{0,4}?(?=20\d\d年)"></replace>
+				<replace from="日"></replace>
+				<replace from="[年月]" to="-"></replace>
+			</matcher>
+			
+			<matcher regular="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?20\d\d年\d{1,2}月\d{1,2}日.{0,4}?\d{1,2}月\d{1,2}日" min="8" max="10" format="yyyy-MM-dd">
+				<replace from="(公示.{0,4}工作日|公告时间|公示时间|公示期|公告发布).{0,30}?(?=20\d\d年)"></replace>
+				<replace from="(?&lt;=年)\d{1,2}月\d{1,2}日"></replace>
+				<replace from="[^\d月年]"></replace>
+				<replace from="[年月]" to="-"></replace>
+			</matcher>
+		</column>
+		
+		<!--采购预算-->
+		<column name="Price" formatNumber="true">
+			<!--采购预算XXX元-->
+			<matcher regular="采购预算[\s\S]{0,20}?[0-9,\.]+元"  max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+			
+			<matcher regular="预算.{0,20}?[0-9,\.]+" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+			
+			<matcher regular="财政资金.{0,20}?[0-9,\.]+元" max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="[^0-9\.]"></replace>
+			</matcher>
+		</column>
+		
+		<!--采购人名称-->
+		<column name="BuyerName" afterfilter="trim-filter">
+			<!--代理XXXX受XXXX的委托-->
+			<matcher regular="代理\S{0,20}?受\S{0,30}?的委托">
+				<replace from="\S*受"></replace>
+				<replace from="的委托"></replace>
+			</matcher>
+			
+			<matcher regular="招 标 人：\s?.{0,30}?\s">
+				<replace from="招 标 人："></replace>
+			</matcher>
+			
+		</column>
+	
+		<!--采购人联系人-->
+		<column name="BuyerMobile">
+			<!--项目联系电话：XXXXX-->
+			<matcher regular="项目联系电话[：:]\s{0,2}\d{0,7}-?\d{5,11}">
+				<replace from="项目联系电话："></replace>
+				<replace from="\s"></replace>
+			</matcher>
+		</column>
+		
+		<column name="BuyerAddress"  afterfilter="trim-filter">
+			<matcher regular="联系地址：广州市天河北路689号\s联系地址：\s?.{0,40}?\s">
+				<replace from="联系地址：广州市天河北路689号\s联系地址："></replace>
+			</matcher>
+		</column>
+		
+		
+		<!--项目编号-->
+		<column name="ProjectCode">
+		
+			<matcher regular="东采公.\d{4}.\d+号" filter="sp-filter">
+				<replace from="公." to="公["></replace>
+				<replace from="(?&lt;=公.\d{4})." to="]"></replace>
+			</matcher>
+			
+			<matcher regular="松生采\d+" filter="sp-filter">
+			</matcher>
+			
+			<matcher regular="编号.{0,1}(:|：).{0,2}[a-zA-Z\d-\s/]+" min="5" max="60">
+				<replace from="编号|:|：|\s"></replace>
+			</matcher>
+		</column>
+		
+	</pattern>
+	
+	<!--广州有德中标-->
+	<pattern id="244">
+		<!--发布时间-->
+		<column name="AnnouncementDate" type="date">
+			<matcher regular="发布时间：\d{4}-\d{2}-\d{2}" format="yyyy-MM-dd">
+				<replace from="发布时间："></replace>
+			</matcher>
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName">
+		
+			<!--
+			<h1>佛山太平洋保险大厦外墙改造工程中标公告</h1>
+			-->
+			<matcher regular="&lt;h1&gt;.*?&lt;/h1&gt;" filter="none">
+				<replace from="&lt;.*?&gt;"></replace>
+				<replace from="(?&lt;=(工程)|(项目)|(服务)|(采购)).{0,10}$"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--中标金额-->
+		<column name="Price" formatNumber="true" filter="tag-filter,trans-filter,sp-filter">
+		
+			<matcher regular="(中标信息).{0,100}?(金额人民币)[：: ].{0,30}?[\d\.,]+元"   max="20" min="4" check="\d{4,20}\.?\d{0,3}">
+				<replace from="(中标信息).{0,100}?(金额人民币)[：: ]"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标信息).{0,100}?(金额人民币)[：: ].{0,30}?[\d\.,]+万"  max="12" min="1" scale="10000"  check="\d{1,4}\.?\d{0,6}">
+				<replace from="(中标信息).{0,100}?(金额人民币)[：: ]"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标信息).{0,100}?(金额人民币)[：: ].{0,30}?[\d\.,]+亿"  max="6" min="1" scale="100000000" check="\d{1,3}\.?\d{0,6}">
+				<replace from="(中标信息).{0,100}?(金额人民币)[：: ]"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+			<matcher regular="(中标信息).{0,100}?(金额人民币)[：: ].{0,30}?[\d\.,]+"   max="20" min="4"  check="\d{4,20}\.?\d{0,3}">
+				<replace from="(中标信息).{0,100}?(金额人民币)[：: ]"></replace>
+				<replace from="[^\d\.]"></replace>
+			</matcher>
+			
+		</column>
+		
+		<!--项目编号-->
+		<column name="ProjectCode">
+			
+			<matcher regular="东采公.\d{4}.\d+号" filter="sp-filter">
+				<replace from="公." to="公["></replace>
+				<replace from="(?&lt;=公.\d{4})." to="]"></replace>
+			</matcher>
+			
+			<matcher regular="松生采\d+" filter="sp-filter">
+			</matcher>
+			
+			<matcher regular="编号.{0,1}(:|：).{0,2}[a-zA-Z\d-\s/]+" min="5" max="60">
+				<replace from="编号|:|：|\s"></replace>
+			</matcher>
+		</column>
+	
+	</pattern>
+	
+	<!--广州有德更正-->
+	<pattern id="245">
+		
+		<column name="Agency">
+			<matcher regular=".">
+				<replace from="^.*$" to="广州有德招标代理有限公司"></replace>
+			</matcher>
+		</column>
+		
+		<column name="IssuingAgency">
+			<matcher regular=".">
+				<replace from="^.*$" to="广州有德招标代理有限公司"></replace>
+			</matcher>
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName">
+		
+			<!--
+			<h1>佛山太平洋保险大厦外墙改造工程中标公告</h1>
+			-->
+			<matcher regular="&lt;h1&gt;.*?&lt;/h1&gt;">
+				<replace from="&lt;.*?&gt;"></replace>
+				<replace from="(?&lt;=(工程)|(项目)|(服务)|(采购)).{0,10}$"></replace>
+			</matcher>
+			
+		</column>
+	
+		<!--发布时间-->
+		<column name="AnnouncementDate" type="date">
+		
+			<matcher regular="发布时间：\d{4}-\d{2}-\d{2}" format="yyyy-MM-dd">
+				<replace from="发布时间："></replace>
+			</matcher>
+			
+		</column>
+		
+		<column name="ProjectCode">
+			
+			<matcher regular="东采公.\d{4}.\d+号" filter="sp-filter">
+				<replace from="公." to="公["></replace>
+				<replace from="(?&lt;=公.\d{4})." to="]"></replace>
+			</matcher>
+			
+			<matcher regular="松生采\d+" filter="sp-filter">
+			</matcher>
+			
+			<matcher regular="编号.{0,1}(:|：).{0,2}[a-zA-Z\d-\s/]+" min="5" max="60">
+				<replace from="编号|:|：|\s"></replace>
+			</matcher>
+		</column>
+	
+	</pattern>
+	
+</patterns>

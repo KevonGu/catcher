@@ -1,0 +1,1 @@
+java -jar "D:\pattern\tools\report.jar" -path "D:\Documents\WeChat Files\guchfe\Files" -id 1 -type 1 -code UTF-8

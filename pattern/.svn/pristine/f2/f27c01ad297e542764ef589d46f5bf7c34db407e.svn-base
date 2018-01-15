@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patterns>
+	
+	<!--广州有德招标-->
+	<pattern id="26">
+		
+		<!--完成时间-->
+		<column name="CompletionDate">
+			
+		</column>
+		
+		<!--包组金额-->
+		<column name="ProcurementMoney">
+			
+		</column>
+		
+		<!--采购内容-->
+		<column name="ProjectContent">
+			<matcher regular="&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?采购内容[\s\S]{0,50}?&lt;/td&gt;[\s\S]{0,50}?&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?&lt;/td&gt;">
+				<replace from="&lt;td[\s\S]*?&gt;[\s\S]*?采购内容[\s\S]*?&lt;/td&gt;[\s\S]*?&lt;td[\s\S]*?&gt;"></replace>
+				<replace from="&lt;[\s\S]*?&gt;"></replace>
+			</matcher>
+			
+			<matcher regular="采购项目内容：\s{0,4}.+?[\s&lt;。]">
+				<replace from="采购项目内容："></replace>
+				<replace from="&lt;.+?&gt;"></replace>
+				<replace from="[\s&lt;。]"></replace>
+			</matcher>
+		</column>
+		
+		<!--采购数量-->
+		<column name="ProjectCount">
+			<matcher regular="采购数量：[\s]{0,4}.+?[\s&lt;。]">
+				<replace from="采购数量："></replace>
+				<replace from="&lt;.+?&gt;"></replace>
+				<replace from="[\s&lt;。]"></replace>
+			</matcher>
+		</column>
+		
+	</pattern>
+	
+	<!--广州有德中标-->
+	<pattern id="399">
+		<!--中标公司名称-->
+		<column name="BidCompanyName">
+		
+			<!--中标人名称：广州市第三建筑装修有限公司<br />-->
+			<matcher regular="((中标)|(成交))((供应商)|(人)|(单位))(名称)\s{0,4}\S{2,30}?[\s。]" filter="tag-filter,trans-filter">
+				<replace from="((中标)|(成交))((供应商)|(人)|(单位))(名称)"></replace>
+				<replace from="[\s。]"></replace>
+			</matcher>	
+			
+			<!--中标人名称：广州市第三建筑装修有限公司<br />-->
+			<matcher regular="((中标)|(成交))((供应商)|(人)|(单位))(名称)?：\s{0,4}\S{2,30}?[&lt;\s。]">
+				<replace from="((中标)|(成交))((供应商)|(人)|(单位))(名称)?："></replace>
+				<replace from="[&lt;\s。]"></replace>
+			</matcher>
+			
+			
+			
+			<matcher regular="&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?((中标)|(成交))供应商：[\s\S]{0,50}?&lt;/td&gt;[\s\S]{0,50}?&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?&lt;/td&gt;">
+				<replace from="&lt;td[\s\S]*?&gt;[\s\S]*?((中标)|(成交))供应商：[\s\S]*?&lt;/td&gt;[\s\S]*?&lt;td[\s\S]*?&gt;"></replace>
+				<replace from="&lt;[\s\S]*?&gt;"></replace>
+			</matcher>
+
+		</column>
+		
+		<!--项目名称-->
+		<column name="ProjectName">
+			<matcher regular="&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?项目名称：[\s\S]{0,50}?&lt;/td&gt;[\s\S]{0,50}?&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?&lt;/td&gt;">
+				<replace from="&lt;td[\s\S]*?&gt;[\s\S]*?项目名称：[\s\S]*?&lt;/td&gt;[\s\S]*?&lt;td[\s\S]*?&gt;"></replace>
+				<replace from="&lt;[\s\S]*?&gt;"></replace>
+			</matcher>
+		</column>
+		
+		<!--中标公司地址-->
+		<column name="BidCompanyAddress">
+			
+			<!--
+			中标人地址：广州市天河区御水街85号408房
+			-->
+			<matcher regular="((中标)|(成交))((供应商)|(人)|(单位))地址：\s{0,4}\S{2,30}?[&lt;\s。]">
+				<replace from="((中标)|(成交))((供应商)|(人)|(单位))地址："></replace>
+				<replace from="[&lt;\s。]"></replace>
+			</matcher>
+			<!--
+			中标供应商信息 <br />1.中标供应商名称：广东省核工业地质局测绘院。 <br />2.法人代表：刘大洋。 <br />3.地址 ：广州市花都区新华镇滨江大道1号。 <br />
+			-->
+			<matcher regular="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}.*?[\s。]" filter="tag-filter,trans-filter">
+				<replace from="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}"></replace>
+				<replace from="[\s。]"></replace>
+			</matcher>
+			
+			<!--
+			中标供应商信息 <br />1.中标供应商名称：广东省核工业地质局测绘院。 <br />2.法人代表：刘大洋。 <br />3.地址 ：广州市花都区新华镇滨江大道1号。 <br />
+			-->
+			<matcher regular="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}：.*?[&lt;\s。]">
+				<replace from="((中标)|(成交))供应商[\s\S]{0,120}地址\s{0,4}："></replace>
+				<replace from="[&lt;\s。]"></replace>
+			</matcher>
+			
+			
+			
+			<!--
+			中标人名称、地址和中标金额<br />中标人名称：广州市第三建筑装修有限公司<br />联系地址：广州市越秀区环市东路498号15D-H<br />
+			-->
+			<matcher regular="中标人[\s\S]{0,120}联系地址\s{0,4}：.*?[&lt;\s。]">
+				<replace from="中标人[\s\S]{0,120}联系地址\s{0,4}："></replace>
+				<replace from="[&lt;\s。]"></replace>
+			</matcher>
+			
+			<!--
+			    <td width="139"> <p align="left">中标供应商地址： </p></td> 
+				<td width="435"> <p align="left">东莞市东城街道火炼树社区东莞大道11号台商大厦2单元办公1114 </p></td>
+			-->
+			<matcher regular="&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?((中标)|(成交))供应商地址：[\s\S]{0,50}?&lt;/td&gt;[\s\S]{0,50}?&lt;td[\s\S]{0,50}?&gt;[\s\S]{0,50}?&lt;/td&gt;">
+				<replace from="&lt;td[\s\S]*?&gt;[\s\S]*?((中标)|(成交))供应商地址：[\s\S]*?&lt;/td&gt;[\s\S]*?&lt;td[\s\S]*?&gt;"></replace>
+				<replace from="&lt;[\s\S]*?&gt;"></replace>
+			</matcher>
+
+			
+		</column>
+		
+		<!--中标金额-->
+		<column name="BidMoney">
+		
+		</column>
+	
+	</pattern>
+	
+</patterns>

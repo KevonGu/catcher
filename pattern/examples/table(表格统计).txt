@@ -1,0 +1,5 @@
+dir=D:\webpage\www.youde.net\tender\data\
+code=GBK
+kv=class:border mt8
+sort=0
+patternId=26
